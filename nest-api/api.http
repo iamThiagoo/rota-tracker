@@ -1,0 +1,32 @@
+###
+GET http://localhost:3000/places?text=Rua Firmino Rodrigues da Silva,Charqueadas,Caxias do Sul
+###
+
+###
+GET http://localhost:3000/places?text=3ª Avenida Aída Celeste,Sussuarana,Salvador
+###
+
+###
+@originId = ChIJk99SDQK9HpURyfhkDLDwcro
+@destinationId = EkNBdi4gQcOtZGEgQ2VsZXN0ZSwgMyAtIFN1c3N1YXJhbmEsIFNhbHZhZG9yIC0gQkEsIDQxMjE0LTA1MCwgQnJhc2lsIjASLgoUChIJ81qX73wQFgcR0VwnbLyWNKkQAyoUChIJ81qX73wQFgcRV0SMLHgBRjk
+###
+
+###
+GET http://localhost:3000/directions?originId={{ originId }}&destinationId={{ destinationId }}
+###
+
+###
+POST http://localhost:3000/routes
+Content-Type: application/json
+
+{
+    "name": "route 1",
+    "source_id": "{{ originId }}",
+    "destination_id": "{{ destinationId }}"
+}
+
+###
+GET http://localhost:3000/routes
+
+###
+GET http://localhost:3000/routes/6758fd08571738fa9d6ec429
