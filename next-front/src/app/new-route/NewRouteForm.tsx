@@ -1,7 +1,9 @@
 "use client";
 
-import { PropsWithChildren, useActionState } from "react";
+import { PropsWithChildren, useEffect } from "react";
+import { useActionState } from "react";
 import { createRouteAction } from "./action/create-route.action";
+import { useToast } from "@/hooks/use-toast";
 
 export function NewRouteForm(props: PropsWithChildren) {
   const [state, formAction] = useActionState<
@@ -11,18 +13,25 @@ export function NewRouteForm(props: PropsWithChildren) {
     } | null,
     FormData
   >(createRouteAction, null);
+
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (state?.error) {
+      toast({
+        title: state.error,
+      });
+    }
+
+    if (state?.success) {
+      toast({
+        title: "Rota criada com sucesso!",
+      });
+    }
+  }, [state, toast]);
+
   return (
     <form action={formAction}>
-      {state?.error && (
-        <div className="p-4 border rounded text-contrast bg-error">
-          {state.error}
-        </div>
-      )}
-      {state?.success && (
-        <div className="p-4 border rounded text-contrast bg-success">
-          Rota criada com sucesso!
-        </div>
-      )}
       {props.children}
     </form>
   );

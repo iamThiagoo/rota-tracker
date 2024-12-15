@@ -4,7 +4,7 @@ import { MapDriver } from "./MapDriver";
 import { Label } from "@/components/ui/label";
 
 export async function getRoutes() {
-  const response = await fetch(`http://localhost:3001/routes`, {
+  const response = await fetch(`${process.env.NEST_API_URL}/routes`, {
     cache: "force-cache",
     next: {
       tags: ["routes"],
