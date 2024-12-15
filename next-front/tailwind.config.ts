@@ -75,7 +75,10 @@ export default {
   					opacity: '0'
   				}
   			}
-  		}
+  		},
+		minHeight: {
+			"new-route-page": `calc(100vh - 14rem)`
+		}
   	}
   },
   plugins: [require("tailwindcss-animate")],

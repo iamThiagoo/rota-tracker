@@ -20,6 +20,16 @@ import {
                 Nova Rota
               </NavigationMenuLink>
             </Link>
+            <Link href="/driver" legacyBehavior passHref>
+              <NavigationMenuLink className="text-white hover:opacity-80">
+                Iniciar Viagem
+              </NavigationMenuLink>
+            </Link>
+            <Link href="/admin" legacyBehavior passHref>
+              <NavigationMenuLink className="text-white hover:opacity-80">
+                Área Admin
+              </NavigationMenuLink>
+            </Link>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>

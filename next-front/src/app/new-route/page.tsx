@@ -2,14 +2,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import WordRotate from "@/components/ui/word-rotate";
 import { NewRouteForm } from "./NewRouteForm";
+import { MapNewRoute } from "./MapNewRoute";
 
 export async function searchDirections(source: string, destination: string) {
     const { placeSourceId, placeDestinationId } = await getPlacesIds(source, destination);
     const directionsResponse = await fetch(`http://localhost:3001/directions?originId=${placeSourceId}&destinationId=${placeDestinationId}`, {
-        cache: "force-cache",
-        next: {
-            revalidate: 60 * 60 * 24
-        }
+        // cache: "force-cache",
+        // next: {
+        //     revalidate: 60 * 60 * 24
+        // }
     });
 
     if (!directionsResponse.ok) throw new Error("Failed to fetch directions data");
@@ -24,16 +25,16 @@ export async function searchDirections(source: string, destination: string) {
 export async function getPlacesIds(source: string, destination: string) {
     const [sourceResponse, destinationResponse] = await Promise.all([
         fetch(`http://localhost:3001/places?text=${source}`, {
-            cache: "force-cache",
-            next: {
-                revalidate: 60 * 60 * 24
-            }
+            // cache: "force-cache",
+            // next: {
+            //     revalidate: 60 * 60 * 24
+            // }
         }),
         fetch(`http://localhost:3001/places?text=${destination}`, {
-            cache: "force-cache",
-            next: {
-                revalidate: 60 * 60 * 24
-            }
+            // cache: "force-cache",
+            // next: {
+            //     revalidate: 60 * 60 * 24
+            // }
         }),
     ])
     
@@ -65,7 +66,7 @@ export async function NewRoutePage({searchParams} : {searchParams: Promise<{sour
 
     return (
         <main className="mt-20">
-            <section className="flex gap-x-10">
+            <section className="flex gap-x-10 min-h-new-route-page">
                 <div className="flex flex-col w-5/12">
                     <WordRotate
                         className="text-violet-500 text-4xl font-bold"
@@ -133,9 +134,7 @@ export async function NewRoutePage({searchParams} : {searchParams: Promise<{sour
                     )}
                 </div>
 
-                <div className="border border-gray-100 text-white rounded-xl w-9/12">
-                    <h2>Mapa</h2>
-                </div>
+                <MapNewRoute directionsData={directionsData} />
             </section>
         </main>
     );
