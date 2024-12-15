@@ -15,4 +15,4 @@ RUN npm install
 
 COPY --chown=node:node . .
 
-CMD [ "tail", "-f", "/dev/null" ]
+CMD [ "npm", "run", "dev" ]
