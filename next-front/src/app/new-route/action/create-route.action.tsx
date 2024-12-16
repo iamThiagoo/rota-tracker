@@ -26,7 +26,7 @@ export async function createRouteAction(state: any, formData: FormData) {
   const startAddress = directionsData.routes[0].legs[0].start_address;
   const endAddress = directionsData.routes[0].legs[0].end_address;
 
-  const response = await fetch(`${process.env.NEST_API_URL}/routes`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_NEST_API_URL}/routes`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

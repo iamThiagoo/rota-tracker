@@ -4,7 +4,7 @@ import { MapDriver } from "./MapDriver";
 import { Label } from "@/components/ui/label";
 
 export async function getRoutes() {
-  const response = await fetch(`${process.env.NEST_API_URL}/routes`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_NEST_API_URL}/routes`, {
     cache: "force-cache",
     next: {
       tags: ["routes"],
@@ -14,8 +14,37 @@ export async function getRoutes() {
   return response.json();
 }
 
-export async function DriverPage() {
+export async function getRoute(routeId : string) : Promise<RouteModel> {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_NEST_API_URL}/routes/${routeId}`, {
+    cache: "force-cache",
+    next: {
+      tags: [`routes-${routeId}`, 'routes'],
+    },
+  });
+
+  return response.json();
+}
+
+export async function DriverPage({searchParams} : {searchParams : Promise<{route_id : string}>}) {
   const routes = await getRoutes();
+  const {route_id} = await searchParams
+  let start_location = {lat: 0, lng: 0};
+  let end_location = {lat: 0, lng: 0};
+
+  if (route_id) {
+    const route = await getRoute(route_id);
+    const leg = route.directions.routes[0].legs[0];
+
+    start_location = {
+      lat: leg.start_location.lat,
+      lng: leg.start_location.lng,
+    }
+
+    end_location = {
+      lat: leg.end_location.lat,
+      lng: leg.end_location.lng,
+    }
+  }
 
   return (
     <main className="mt-20">
@@ -36,6 +65,7 @@ export async function DriverPage() {
             <select
               id="route_id"
               name="route_id"
+              defaultValue={route_id}
               className="mb-2 p-2 mt-2 w-full border rounded bg-default text-contrast bg-zinc-900 text-white"
             >
               <option key="0" value="">
@@ -59,7 +89,7 @@ export async function DriverPage() {
           </form>
         </div>
 
-        <MapDriver />
+        <MapDriver route_id={route_id} start_location={start_location} end_location={end_location} />
       </section>
     </main>
   );

@@ -6,7 +6,7 @@ import { MapNewRoute } from "./MapNewRoute";
 
 export async function searchDirections(source: string, destination: string) {
     const { placeSourceId, placeDestinationId } = await getPlacesIds(source, destination);
-    const directionsResponse = await fetch(`${process.env.NEST_API_URL}/directions?originId=${placeSourceId}&destinationId=${placeDestinationId}`, {
+    const directionsResponse = await fetch(`${process.env.NEXT_PUBLIC_NEST_API_URL}/directions?originId=${placeSourceId}&destinationId=${placeDestinationId}`, {
         // cache: "force-cache",
         // next: {
         //     revalidate: 60 * 60 * 24
@@ -24,13 +24,13 @@ export async function searchDirections(source: string, destination: string) {
 
 export async function getPlacesIds(source: string, destination: string) {
     const [sourceResponse, destinationResponse] = await Promise.all([
-        fetch(`${process.env.NEST_API_URL}/places?text=${source}`, {
+        fetch(`${process.env.NEXT_PUBLIC_NEST_API_URL}/places?text=${source}`, {
             // cache: "force-cache",
             // next: {
             //     revalidate: 60 * 60 * 24
             // }
         }),
-        fetch(`${process.env.NEST_API_URL}/places?text=${destination}`, {
+        fetch(`${process.env.NEXT_PUBLIC_NEST_API_URL}/places?text=${destination}`, {
             // cache: "force-cache",
             // next: {
             //     revalidate: 60 * 60 * 24
