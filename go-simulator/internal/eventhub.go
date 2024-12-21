@@ -59,7 +59,6 @@ func (eh *EventHub) HandleEvent(msg []byte) error {
 		}
 
 		return eh.handleDeliveryStarted(event)
-
 	default:
 		return errors.New("error: unknown event")
 	}

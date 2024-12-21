@@ -1,0 +1,25 @@
+{
+    "event": "RouteCreated",
+    "id": "route-12345",
+    "distance": 120,
+    "directions": [
+        {
+            "lat": 37.7749,
+            "lng": -122.4194
+        },
+        {
+            "lat": 34.0522,
+            "lng": -118.2437
+        },
+        {
+            "lat": 36.7783,
+            "lng": -119.4179
+        }
+    ]
+}
+
+{
+    "event": "DeliveryStarted",
+    "route_id": "route-124"
+}
+  

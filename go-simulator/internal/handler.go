@@ -1,6 +1,8 @@
 package internal
 
-import "time"
+import (
+	"time"
+)
 
 type RouteCreatedEvent struct {
 	EventName  string       `json:"event"`
@@ -79,14 +81,13 @@ func DeliveryStartedHandler(event *DeliveryStartedEvent, routeService *RouteServ
 		return err
 	}
 
-	DriverMovedEvent := NewDriverMovedEvent(route.ID, 0, 0)
-	for _, direction := range route.Directions {
-		DriverMovedEvent.RouteID = route.ID
-		DriverMovedEvent.Lat = direction.Lat
-		DriverMovedEvent.Lng = direction.Lng
-		time.Sleep(time.Second)
-		ch <- DriverMovedEvent
-	}
+	go func() {
+		for _, direction := range route.Directions {
+			dme := NewDriverMovedEvent(route.ID, direction.Lat, direction.Lng)
+			ch <- dme
+			time.Sleep(time.Second)
+		}
+	}()
 
 	return nil
 }

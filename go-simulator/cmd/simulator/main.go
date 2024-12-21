@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/iamThiagoo/rota-tracker/internal"
 	"github.com/segmentio/kafka-go"
@@ -12,7 +13,7 @@ import (
 )
 
 func main() {
-	mongoStr := "mongodb://admin:admin@localhost:27017/routes?authSource=admin"
+	mongoStr := "mongodb://admin:admin@mongo:27017/routes?authSource=admin"
 	mongoConnection, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoStr))
 	if err != nil {
 		panic(err)
@@ -22,18 +23,17 @@ func main() {
 	routeService := internal.NewRouteService(mongoConnection, freightService)
 	chDriverMoved := make(chan *internal.DriverMovedEvent)
 	freightWriter := &kafka.Writer{
-		Addr:     kafka.TCP("localhost:9092"),
+		Addr:     kafka.TCP("kafka:9092"),
 		Topic:    "freight",
 		Balancer: &kafka.LeastBytes{},
 	}
 	simulatorWriter := &kafka.Writer{
-		Addr:     kafka.TCP("localhost:9092"),
+		Addr:     kafka.TCP("kafka:9092"),
 		Topic:    "simulator",
 		Balancer: &kafka.LeastBytes{},
 	}
-
 	routeReader := kafka.NewReader(kafka.ReaderConfig{
-		Brokers: []string{"localhost:9092"},
+		Brokers: []string{"kafka:9092"},
 		Topic:   "route",
 		GroupID: "simulator",
 	})
@@ -56,4 +56,11 @@ func main() {
 			}
 		}(m.Value)
 	}
+}
+
+func getEnv(key, fallback string) string {
+	if value, exists := os.LookupEnv(key); exists {
+		return value
+	}
+	return fallback
 }
