@@ -1,9 +1,8 @@
 services:
   mongo:
-    image: mongo:latest
-    container_name: mongo
-    ports:
-    - "27017:27017"
+    build: ./Dockerfile
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=admin
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - 27017:27017

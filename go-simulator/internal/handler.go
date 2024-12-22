@@ -2,6 +2,8 @@ package internal
 
 import (
 	"time"
+
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type RouteCreatedEvent struct {
@@ -21,12 +23,11 @@ type DeliveryStartedEvent struct {
 	EventName string `json:"event"`
 	RouteID   string `json:"route_id"`
 }
-
 type DriverMovedEvent struct {
-	EventName string `json:"event"`
-	RouteID   string `json:"route_id"`
-	Lat       float64
-	Lng       float64
+	EventName string  `json:"event"`
+	RouteID   string  `json:"route_id"`
+	Lat       float64 `json:"lat"`
+	Lng       float64 `json:"lng"`
 }
 
 func NewRouteCreatedEvent(routeID string, distance int, directions []Directions) *RouteCreatedEvent {
@@ -46,7 +47,7 @@ func NewFreightCalculatedEvent(routeID string, amount float64) *FreightCalculate
 	}
 }
 
-func newDeliveryStartedEvent(routeID string) *DeliveryStartedEvent {
+func NewDeliveryStartedEvent(routeID string) *DeliveryStartedEvent {
 	return &DeliveryStartedEvent{
 		EventName: "DeliveryStarted",
 		RouteID:   routeID,
@@ -62,21 +63,17 @@ func NewDriverMovedEvent(routeID string, lat float64, lng float64) *DriverMovedE
 	}
 }
 
-func RouteCreatedHandler(event *RouteCreatedEvent, routeService *RouteService) (*FreightCalculatedEvent, error) {
+func RouteCreatedHandler(event *RouteCreatedEvent, routeService *RouteService, mongoClient *mongo.Client) (*FreightCalculatedEvent, error) {
 	route := NewRoute(event.RouteID, event.Distance, event.Directions)
-	routeCreated, err := routeService.CreateRoute(*route)
-
+	routeCreated, err := routeService.CreateRoute(route)
 	if err != nil {
 		return nil, err
 	}
-
-	FreightCalculatedEvent := NewFreightCalculatedEvent(routeCreated.ID, routeCreated.FreightPrice)
-	return FreightCalculatedEvent, nil
+	return NewFreightCalculatedEvent(routeCreated.ID, routeCreated.FreightPrice), nil
 }
 
-func DeliveryStartedHandler(event *DeliveryStartedEvent, routeService *RouteService, ch chan *DriverMovedEvent) error {
+func DeliveryStartedHandler(event *DeliveryStartedEvent, routeService *RouteService, mongoClient *mongo.Client, ch chan *DriverMovedEvent) error {
 	route, err := routeService.GetRoute(event.RouteID)
-
 	if err != nil {
 		return err
 	}
@@ -85,9 +82,8 @@ func DeliveryStartedHandler(event *DeliveryStartedEvent, routeService *RouteServ
 		for _, direction := range route.Directions {
 			dme := NewDriverMovedEvent(route.ID, direction.Lat, direction.Lng)
 			ch <- dme
-			time.Sleep(time.Second)
+			time.Sleep(1 * time.Second)
 		}
 	}()
-
 	return nil
 }
