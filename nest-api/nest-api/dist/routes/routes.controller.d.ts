@@ -9,6 +9,7 @@ export declare class RoutesController {
         id: string;
         distance: number;
         duration: number;
+        freight: number | null;
         created_at: Date;
         updated_at: Date;
         source: {
@@ -34,6 +35,7 @@ export declare class RoutesController {
         id: string;
         distance: number;
         duration: number;
+        freight: number | null;
         created_at: Date;
         updated_at: Date;
         source: {
@@ -59,6 +61,7 @@ export declare class RoutesController {
         id: string;
         distance: number;
         duration: number;
+        freight: number | null;
         created_at: Date;
         updated_at: Date;
         source: {

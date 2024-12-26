@@ -17,8 +17,8 @@ export class RoutesDriverGateway {
     const { route_id } = payload;
     const route = await this.routesService.findOne(route_id);
 
-    // @ts-expect-error - routes has not been defined
-    const { steps } = route.directions.routes[0].legs[0];
+    // @ts-ignore
+    const { steps } = route.directions.routes[0]?.legs[0];
     for (const step of steps) {
       const { lat, lng } = step.start_location;
       client.emit(`server:points/${route_id}:list`, {

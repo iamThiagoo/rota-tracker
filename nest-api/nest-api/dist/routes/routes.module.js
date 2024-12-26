@@ -13,12 +13,13 @@ const routes_controller_1 = require("./routes.controller");
 const maps_module_1 = require("../maps/maps.module");
 const routes_driver_service_1 = require("./routes-driver/routes-driver.service");
 const routes_driver_gateway_1 = require("./routes-driver/routes-driver.gateway");
+const kafka_module_1 = require("../kafka/kafka.module");
 let RoutesModule = class RoutesModule {
 };
 exports.RoutesModule = RoutesModule;
 exports.RoutesModule = RoutesModule = __decorate([
     (0, common_1.Module)({
-        imports: [maps_module_1.MapsModule],
+        imports: [maps_module_1.MapsModule, kafka_module_1.KafkaModule],
         controllers: [routes_controller_1.RoutesController],
         providers: [routes_service_1.RoutesService, routes_driver_service_1.RoutesDriverService, routes_driver_gateway_1.RoutesDriverGateway],
     })

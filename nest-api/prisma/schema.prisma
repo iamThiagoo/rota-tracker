@@ -20,6 +20,7 @@ model Route {
   destination Place
   distance    Float
   duration    Float
+  freight     Float?
   directions  Json
   created_at  DateTime     @default(now())
   updated_at  DateTime     @updatedAt

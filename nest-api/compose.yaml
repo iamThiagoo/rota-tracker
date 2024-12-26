@@ -1,0 +1,11 @@
+include:
+  - ../services/mongo/compose.yaml
+  - ../services/kafka/compose.yaml
+
+services:
+  nest:
+    build: .
+    volumes:
+      - .:/home/node/app
+    ports:
+      - 3000:3000

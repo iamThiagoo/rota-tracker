@@ -1,0 +1,4 @@
+include:
+  - ./golang-simulator/compose.yaml
+  - ./nest-api/compose.yaml
+  - ./next-front/compose.yaml

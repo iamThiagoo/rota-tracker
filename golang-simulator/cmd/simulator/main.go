@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	mongoURI := getEnv("MONGO_URI", "mongodb://admin:admin@mongo:27017/routes?authSource=admin")
+	mongoURI := getEnv("MONGO_URI", "mongodb://root:root@mongo:27017/routes?authSource=admin")
 	kafkaBroker := getEnv("KAFKA_BROKER", "kafka:9092")
 	kafkaRouteTopic := getEnv("KAFKA_ROUTE_TOPIC", "route")
 	kafkaFreightTopic := getEnv("KAFKA_FREIGHT_TOPIC", "freight")

@@ -7,7 +7,7 @@ export async function createRouteAction(state: any, formData: FormData) {
   const { sourceId, destinationId } = Object.fromEntries(formData);
 
   const directionsResponse = await fetch(
-    `http:localhost:3001/directions?originId=${sourceId}&destinationId=${destinationId}`,
+    `${process.env.NEXT_PUBLIC_NEST_API_URL}/directions?originId=${sourceId}&destinationId=${destinationId}`,
     {
       // cache: "force-cache", //default
       // next: {

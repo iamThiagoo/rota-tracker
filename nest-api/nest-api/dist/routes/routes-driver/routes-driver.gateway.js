@@ -20,7 +20,7 @@ let RoutesDriverGateway = class RoutesDriverGateway {
     async handleMessage(client, payload) {
         const { route_id } = payload;
         const route = await this.routesService.findOne(route_id);
-        const { steps } = route.directions.routes[0].legs[0];
+        const { steps } = route.directions.routes[0]?.legs[0];
         for (const step of steps) {
             const { lat, lng } = step.start_location;
             client.emit(`server:points/${route_id}:list`, {

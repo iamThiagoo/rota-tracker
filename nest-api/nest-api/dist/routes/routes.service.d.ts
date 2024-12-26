@@ -1,16 +1,19 @@
 import { CreateRouteDto } from './dto/create-route.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { DirectionsService } from 'src/maps/directions/directions.service';
+import * as kafkaLib from '@confluentinc/kafka-javascript';
 export declare class RoutesService {
     private prismaService;
     private directionsService;
-    constructor(prismaService: PrismaService, directionsService: DirectionsService);
+    private kafkaProducer;
+    constructor(prismaService: PrismaService, directionsService: DirectionsService, kafkaProducer: kafkaLib.KafkaJS.Producer);
     create(createRouteDto: CreateRouteDto): Promise<{
         name: string;
         directions: import("@prisma/client/runtime/library").JsonValue;
         id: string;
         distance: number;
         duration: number;
+        freight: number | null;
         created_at: Date;
         updated_at: Date;
         source: {
@@ -36,6 +39,7 @@ export declare class RoutesService {
         id: string;
         distance: number;
         duration: number;
+        freight: number | null;
         created_at: Date;
         updated_at: Date;
         source: {
@@ -61,6 +65,7 @@ export declare class RoutesService {
         id: string;
         distance: number;
         duration: number;
+        freight: number | null;
         created_at: Date;
         updated_at: Date;
         source: {

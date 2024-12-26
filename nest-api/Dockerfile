@@ -1,18 +1,11 @@
-FROM node:20-slim
+FROM node:22.8.0-slim
 
-RUN apt-get update && \
-    apt-get install -y openssl procps && \
-    rm -rf /var/lib/apt/lists/* && \
-    npm install -g @nestjs/cli@10.0.0
+RUN apt update && \
+    apt install openssl procps -y && \
+    npm install -g @nestjs/cli@10.4.8
 
 USER node
 
 WORKDIR /home/node/app
 
-COPY --chown=node:node package*.json ./
-
-RUN npm install
-
-COPY --chown=node:node . .
-
-CMD [ "npm", "run", "dev" ]
+CMD [ "tail", "-f", "/dev/null" ]
